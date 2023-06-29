@@ -290,10 +290,12 @@ def run_smart_group_update(sg_id, can_grace=False, fake_run=False):
         pending_removals,
         "(Fake)" if fake_run else "",
     )
+    if added > 0 or removed > 0:
+        logger.info(message)
 
-    logger.info(message)
+        send_update_to_webhook(group, message)
 
-    send_update_to_webhook(group, message)
+
 
     # cleanup graces
     GracePeriodRecord.objects.filter(
